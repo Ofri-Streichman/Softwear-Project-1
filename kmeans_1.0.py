@@ -30,14 +30,13 @@ while (True):
         break
 
 # initiating our info into a 4 tables of size K for the K clusters, centroids, size and sums
-Clstr = [[]*k] #has k empty lists ehich represent the ckusters
-Global Cntr = []
+Clstr = [[] for i in rang(k)] #has k empty lists which represent the clusters
+Cntr = []
 Cl_size = []
-Cl_sum = []
 
 # Start by filling the Centroids array with K random vectors (deterministically)
 for i in range(k):
-    Clstr[i] = data[i]
+    Cntr[i] = data[i]
 
 #the functions we'll need:
 # calculating the difference between two vectors of length D
@@ -58,12 +57,52 @@ def place(vec):
     Clstr[min[0]].add(vec)
     return
 
+# creating the new means
+def update_means():
+    for i in range(k):
+        Cl_size[i]= len(Clstr[i])
+        assert (Cl_size[i]>0)
+        v_sum=vectorsum(i)
+        for j in range(d):
+            v_sum[j]/= Cl_size[i]
+
+
+# creating a vector which is the sum of all the vectors in cluster i
+def vectorsum(i):
+    v_sum = [0 for i in range(d)]
+    for j in range(Cl_size[i]):
+        for l in range(d):
+            v_sum[l]+=Clstr[i][j][l]
+    return v_sum
+
+#clearing all the k cluster, so we can re-arrange them
+def clear_Clstr():
+    Clstr= [[] for i in range(k)]
+
+#comparing two arrays of vectors, return 1 if they are equal or 0 if they're not
+def array_equal(arr1, arr2):
+    assert (len(arr2)==len(arr1))
+    for i in range(k):
+        for j in range(d):
+            if(arr1[i][j]!=arr2[i][j]):
+                return False
+    return True
 
 
 
 #the main part of the function:
-int i=0
-Var: Bool = True
-#While ((i < MAX_ITER) and Var):
+counter=0
+While(counter < MAX_ITER):
+    prev_cntr = copy(Cntr)
+    for vector in data:
+        place(vector)
+    update_means()
+    clear_Clstr()
+    if (array_equal(prev_cntr,Cntr)):
+        break
+    counter += 1
+
+
+
 
 
