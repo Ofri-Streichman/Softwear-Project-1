@@ -92,7 +92,7 @@ def array_equal(arr1, arr2):
 
 #the main part of the function:
 counter=0
-While(counter < MAX_ITER):
+while(counter < MAX_ITER):
     prev_cntr = copy(Cntr)
     for vector in data:
         place(vector)
