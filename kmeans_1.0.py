@@ -88,6 +88,15 @@ def array_equal(arr1, arr2):
                 return False
     return True
 
+#printing the current centeroids
+def print_means():
+    for i in range(K):
+        for j in range(d - 1):
+            print("{:.2f}".format(curr[i][j]), end=",")
+        if i < K - 1:
+            print("{:.2f}".format(curr[i][d - 1]))
+        else:
+            print("{:.2f}".format(curr[i][d - 1]), end="")
 
 
 #the main part of the function:
@@ -101,7 +110,7 @@ while(counter < MAX_ITER):
     if (array_equal(prev_cntr,Cntr)):
         break
     counter += 1
-
+print_means()
 
 
 
