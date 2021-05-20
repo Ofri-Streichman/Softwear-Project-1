@@ -3,15 +3,15 @@ import argparse
 # This function reads from the commend line.
 parser = argparse.ArgumentParser(description='the argument from cl')
 parser.add_argument("K", type=int, help="K – the number of clusters")
-parser.add_argument("N", type=int, help="N – the number of observations ")
-parser.add_argument("d", type=int, help="d – the dimension of each observation")
+#parser.add_argument("N", type=int, help="N – the number of observations ")
+#parser.add_argument("d", type=int, help="d – the dimension of each observation")
 parser.add_argument("MAX_ITER", type=int,
                                    help="MAX_ITER – the maximum number of iterations")
 args = parser.parse_args()
 
 K = args.K
-N = args.N
-d = args.d
+#N = args.N
+#d = args.d
 MAX_ITER = args.MAX_ITER
 
 #________________________________________________________#
@@ -26,6 +26,9 @@ while True:
         data.append(vec)
     except EOFError:
         break
+
+N = len(data)
+d = len(data[0])
 
 # initiating our info into a 4 tables of size K for the K clusters, centroids, size and sums
 Clstr = [[] for i in range(K)] #has k empty lists which represent the clusters
@@ -100,6 +103,7 @@ def print_means():
 #the main part of the function:
 counter=0
 while(counter < MAX_ITER):
+    print("hello")
     prev_cntr = Cntr.copy()
     for vector in data:
         place(vector)
