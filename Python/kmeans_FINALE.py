@@ -6,12 +6,10 @@ import sys
 arglen= len(sys.argv)
 assert (arglen==2 or arglen==3) # making sure we have just 2 arguments (K and MAX_ITER) or just 1 (K)
 K= int(sys.argv[1])
-assert (K>0)
 if (arglen==2):
     MAX_ITER=200
 else:
     MAX_ITER= int(sys.argv[2])
-    assert (MAX_ITER>0)
 
 
 
@@ -27,7 +25,7 @@ while True:
         break
 
 N = len(data)
-assert (N>=K)
+assert (N>K)
 
 d = len(data[0])
 assert (d>0)
@@ -109,6 +107,7 @@ def print_cen():
             print("{:.4f}".format(Cntr[i][d - 1]))
         else:
             print("{:.4f}".format(Cntr[i][d - 1]), end="")
+    print()
 
 
 
