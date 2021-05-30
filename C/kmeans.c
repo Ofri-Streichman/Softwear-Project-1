@@ -4,8 +4,9 @@
 #include <string.h>
 
 typedef struct {
-    double* vector_sum;
+    double * vector_sum;
     int size;
+
 }cluster;
 
 double* array_copy(double*,const double*, int);
@@ -161,6 +162,16 @@ int main(int argc, char* argv[]) {
     double **curr_centroids;
     K = atoi(argv[1]);
 
+    if (K <= 0) {
+        printf("ERROR");
+        return 0;
+    }
+
+    if (argc < 3){
+        printf("ERROR");
+        return 0;
+    }
+
     if(argc < 4) {
         max_iter = 200;
     }
@@ -168,15 +179,23 @@ int main(int argc, char* argv[]) {
         max_iter = atoi(argv[2]);
     }
 
-    first_line= (char*) malloc(200*sizeof(char*));
-    first_line_copy= (char*) malloc(200*sizeof(char*));
-    vector_string= (char*) malloc(200*sizeof(char*));
+    first_line= (char*) malloc(1000*sizeof(char*));
+    assert(first_line != NULL);
+    first_line_copy= (char*) malloc(1000*sizeof(char*));
+    assert(first_line_copy != NULL);
+    vector_string= (char*) malloc(1000*sizeof(char*));
+    assert(vector_string != NULL);
     vectors_array = (double **) malloc( sizeof(double *));
+    assert(vectors_array != NULL);
     clusters = (cluster*) malloc(K*sizeof (cluster));
+    assert(clusters != NULL);
     prev_centroids = (double **) malloc(K * sizeof(double *));
+    assert(prev_centroids != NULL);
     curr_centroids = (double **) malloc(K * sizeof(double *));
+    assert(curr_centroids != NULL);
 
-    scanf("%s", first_line);
+    scanf("%s", first_line); /*reading the first line to calculate d*/
+
     strcpy(first_line_copy,first_line);
     token = strtok(first_line, delimiter);
 
@@ -185,8 +204,13 @@ int main(int argc, char* argv[]) {
         d++;
     }
     N++;
+    if (d <= 0) {
+        printf("ERROR");
+        return 0;
+    }
 
     vectors_array[0] = (double*) malloc(d*sizeof (double));
+    assert(vectors_array[0]!=NULL);
     token = strtok(first_line_copy, delimiter);
     while (token != NULL) {
         vectors_array[0][i] = (double) atof(token);
@@ -194,9 +218,10 @@ int main(int argc, char* argv[]) {
         i++;
     }
 
-    while (scanf("%s", vector_string) == 1) {
+    while (scanf("%s", vector_string) == 1) { /*reading the input file and filling the vectors array*/
         length++;
         vectors_array =(double**) realloc(vectors_array, length*d*sizeof(double*));
+        assert(vectors_array!=NULL);
         vectors_array[N] = (double *) malloc(d * sizeof(double));
         assert(vectors_array[N] != NULL);
         token1 = strtok(vector_string, delimiter);/*split the string*/
@@ -206,10 +231,15 @@ int main(int argc, char* argv[]) {
         while (cnt < d) {
             r++;
             token1 = strtok(NULL, delimiter);
-            vectors_array[N][r] = (double) atof(token1);
+            vectors_array[N][r] = (double) atof(token1); 
             cnt++;
         }
         N++;
+    }
+
+    if (N <= K) {
+        printf("ERROR");
+        return 0;
     }
 
     clusters = cluster_init(clusters,K,d);
@@ -231,13 +261,14 @@ int main(int argc, char* argv[]) {
     }
 
     cnt=0;
-    while(cnt < max_iter && !array_equal(curr_centroids,prev_centroids,K,d)){
+    while(cnt < max_iter && !array_equal(curr_centroids,prev_centroids,K,d)){ /*the main function*/
         array_2dim_copy(prev_centroids,curr_centroids,K,d);
         reset_cluster(clusters,K,d);
         for(x=0;x<N;x++) {
             double *distance;
             int min_index;
             distance = (double *)malloc(K* sizeof(double));
+            assert(distance!=NULL);
             for (b = 0; b < K; b++) {
                 distance[b] = diff(vectors_array[x], prev_centroids[b], d);
             }
@@ -250,6 +281,12 @@ int main(int argc, char* argv[]) {
     }
 
     print_cents_array(curr_centroids,K,d);
+
+    free(first_line_copy);
+    first_line_copy=NULL;
+
+    free(first_line);
+    first_line=NULL;
 
     free(vector_string);
     vector_string=NULL;
