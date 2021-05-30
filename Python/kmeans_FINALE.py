@@ -6,11 +6,12 @@ import sys
 arglen= len(sys.argv)
 assert (arglen==2 or arglen==3) # making sure we have just 2 arguments (K and MAX_ITER) or just 1 (K)
 K= int(sys.argv[1])
+assert (K>0)
 if (arglen==2):
     MAX_ITER=200
 else:
     MAX_ITER= int(sys.argv[2])
-
+    assert (MAX_ITER>0)
 
 
 # reading the data from the file and putting n vectors in an array
