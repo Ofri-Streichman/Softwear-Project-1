@@ -167,16 +167,15 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    if (argc < 3){
-        printf("ERROR");
-        return 0;
-    }
-
     if(argc < 4) {
         max_iter = 200;
     }
     else {
         max_iter = atoi(argv[2]);
+        if (max_iter <= 0 ) {
+            printf("ERROR");
+            return 0;
+        }
     }
 
     first_line= (char*) malloc(1000*sizeof(char*));
@@ -248,7 +247,7 @@ int main(int argc, char* argv[]) {
         prev_centroids[e] = (double *) malloc(d * sizeof(double));
         assert(prev_centroids[e] != NULL);
         curr_centroids[e] = (double *) malloc(d * sizeof(double));
-        assert(prev_centroids[e] != NULL);
+        assert(curr_centroids[e] != NULL);
         for(m=0;m<d;m++){
             prev_centroids[e][m]=0;
         }
